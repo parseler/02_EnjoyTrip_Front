@@ -66,7 +66,7 @@
       <section class="single-post-content">
         <div class="container-fluid" style="padding-left: 30px; padding-right: 30px">
           <div class="row">
-            <div class="col-md-9" data-aos="fade-up">
+            <div class="col-md-11" id="main-map" data-aos="fade-up">
               <div class="alert alert-primary text-center fw-bold" role="alert">
                 전국 관광지 정보
               </div>
@@ -93,16 +93,27 @@
                   placeholder="검색어"
                   aria-label="검색어"
                 />
-                <button id="btn-search" class="btn btn-outline-success" type="button">검색</button>
+                <button
+                  id="btn-search"
+                  class="btn btn-outline-success"
+                  type="button"
+                  onclick="btnSearchSidebar()"
+                >
+                  검색
+                </button>
               </form>
               <!-- kakao map start -->
               <div id="map" class="mt-3" style="width: 100%; height: 700px"></div>
               <!-- kakao map end -->
               <!-- 관광지 검색 end -->
             </div>
+            <div class="col-md-1">
+              <!-- 사이드바 열기 버튼 -->
+              <button onclick="toggleSidebar()">></button>
+            </div>
             <div class="col-md-3">
               <!-- ======= Sidebar ======= -->
-              <div class="aside-block">
+              <div id="sidebar" style="display: none" class="aside-block">
                 <div class="tab-content" id="place-info">
                   <!-- side -->
                   <div class="post-entry-1 border-bottom d-flex">
@@ -253,11 +264,18 @@
           .then((data) => makeList(data));
       });
 
-      var positions; // marker 배열.
+      var positions = null; // marker 배열.
+      var markers = []; //marker 배열
+      var markeridx = 0;
       function makeList(data) {
         console.log(data);
         let trips = data.response.body.items.item;
         let tripList = ``;
+
+        markers.forEach((marker) => {
+          marker.setMap(null);
+        });
+
         positions = [];
 
         trips.forEach((area) => {
@@ -314,6 +332,8 @@
             title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
             image: markerImage, // 마커 이미지
           });
+
+          markers[markeridx++] = marker;
         }
 
         // 첫번째 검색 정보를 이용하여 지도 중심을 이동 시킵니다

@@ -208,3 +208,42 @@ window.onload = function () {
   UserLoginCheck();
   loginUserBar();
 };
+
+// 사이드바 열기/닫기 상태를 나타내는 변수
+var isSidebarOpen = false;
+
+// 사이드바 열기/닫기 기능을 구현하는 함수
+function toggleSidebar() {
+  var sidebar = document.getElementById("sidebar"); // 사이드바 요소 가져오기
+  var mainbar = document.getElementById("main-map");
+  var map = document.getElementById("map");
+
+  // 사이드바의 표시 상태를 변경하고 isSidebarOpen 변수 업데이트
+  if (!isSidebarOpen) {
+    sidebar.style.display = "block";
+    mainbar.classList.remove("col-md-11");
+    mainbar.classList.add("col-md-8");
+    isSidebarOpen = true; // 사이드바가 열린 상태로 업데이트
+  } else {
+    sidebar.style.display = "none";
+    mainbar.classList.remove("col-md-8");
+    mainbar.classList.add("col-md-11");
+    isSidebarOpen = false; // 사이드바가 닫힌 상태로 업데이트
+  }
+}
+
+// 검색 시 사이드바 열기기능을 구현하는 함수
+function btnSearchSidebar() {
+  var sidebar = document.getElementById("sidebar"); // 사이드바 요소 가져오기
+  var mainbar = document.getElementById("main-map");
+  var map = document.getElementById("map");
+
+  // 사이드바가 숨겨져 있는 경우 보이도록 변경
+  if (!isSidebarOpen) {
+    sidebar.style.display = "block";
+    mainbar.classList.remove("col-md-11");
+    mainbar.classList.add("col-md-8");
+    isSidebarOpen = true; // 사이드바가 열린 상태로 업데이트
+  }
+  // map.style.width = "100%";
+}
