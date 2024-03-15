@@ -1,9 +1,3 @@
-/**
- * Template Name: ZenBlog
- * Template URL: https://bootstrapmade.com/zenblog-bootstrap-blog-template/
- * Author: BootstrapMade.com
- * License: https:///bootstrapmade.com/license/
- */
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
@@ -160,11 +154,11 @@ function register() {
     id: id,
     password: password,
     email: email,
+    isLogin: false,
   };
 
   localStorage.setItem("user", JSON.stringify(user));
-  alert("회원가입이 완료되었습니다.");
-  window.location.href = "index.html";
+  window.location.href = "login.html";
 }
 
 function login() {
@@ -172,13 +166,45 @@ function login() {
   var password = document.querySelector("#password").value;
   var rememberCheck = document.querySelector("#remember-check").checked;
 
-  // 로그인 기능 구현
   var user = JSON.parse(localStorage.getItem("user"));
 
   if (user.id == id && user.password == password) {
-    alert("로그인에 성공했습니다.");
-    window.location.href = "index.html";
+    user.isLogin = true;
+    localStorage.setItem("user", JSON.stringify(user));
+    window.location.replace("index.html");
   } else {
     alert("존재하지 않는 아이디 또는 잘못된 비밀번호입니다.");
   }
 }
+
+function logout() {
+  localStorage.clear();
+  window.location.replace("index.html");
+}
+
+function UserLoginCheck() {
+  // 로그인 기능 구현
+  var user = JSON.parse(localStorage.getItem("user"));
+  if (user == null) return false;
+  if (user.isLogin == false) return false;
+  return true;
+}
+
+function loginUserBar() {
+  var loginNav = document.querySelector("#loginUserCheck");
+
+  var user = JSON.parse(localStorage.getItem("user"));
+
+  if (user == null) return;
+  if (!user.isLogin) return;
+  loginNav.innerHTML = `
+    <a href="#" onclick="logout()" class="me-3">로그아웃</a>
+    <a href="mypage.html" class="me-3">마이페이지</a>
+    <a href="#" class="mx-2"><span class="bi-instagram"></span></a>
+  `;
+}
+
+window.onload = function () {
+  UserLoginCheck();
+  loginUserBar();
+};
