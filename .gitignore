@@ -27,7 +27,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-./assets/js/key.js
-
+assets/js/key.js
 
 # End of https://www.toptal.com/developers/gitignore/api/windows
