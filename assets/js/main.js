@@ -157,7 +157,13 @@ function register() {
     isLogin: false,
   };
 
-  localStorage.setItem("user", JSON.stringify(user));
+  var users = JSON.parse(localStorage.getItem("users"));
+  if (!users) users = [];
+
+  console.log(users + user);
+  users.push(user);
+
+  localStorage.setItem("users", JSON.stringify(users));
   window.location.href = "login.html";
 }
 
@@ -166,37 +172,96 @@ function login() {
   var password = document.querySelector("#password").value;
   var rememberCheck = document.querySelector("#remember-check").checked;
 
-  var user = JSON.parse(localStorage.getItem("user"));
+  var users = JSON.parse(localStorage.getItem("users"));
+  var userExist = false;
 
-  if (user.id == id && user.password == password) {
-    user.isLogin = true;
-    localStorage.setItem("user", JSON.stringify(user));
-    window.location.replace("index.html");
-  } else {
-    alert("존재하지 않는 아이디 또는 잘못된 비밀번호입니다.");
+  users.forEach((user) => {
+    if (user.id == id && user.password == password) {
+      user.isLogin = true;
+      localStorage.setItem("users", JSON.stringify(users));
+      userExist = true;
+      window.location.replace("index.html");
+    }
+  });
+
+  if (!userExist) {
+    alert("아이디또는 비밀번호를 확인해주세요");
   }
 }
 
-function logout() {
-  localStorage.clear();
+function withdraw() {
+  var users = JSON.parse(localStorage.getItem("users"));
+
+  users = users.filter((user) => {
+    if (user.isLogin) {
+      return false; // 해당 사용자를 제거하기 위해 false를 반환
+    }
+    return true; // 다른 사용자는 유지하기 위해 true를 반환
+  });
+  localStorage.setItem("users", JSON.stringify(users));
   window.location.replace("index.html");
 }
 
-function UserLoginCheck() {
-  // 로그인 기능 구현
-  var user = JSON.parse(localStorage.getItem("user"));
-  if (user == null) return false;
-  if (user.isLogin == false) return false;
-  return true;
+function modify() {
+  var password = document.getElementById("password").value;
+  var passwordCheck = document.getElementById("password-check").value;
+
+  // 비밀번호와 비밀번호 확인 일치 여부 확인
+  if (password !== passwordCheck) {
+    alert("비밀번호가 일치하지 않습니다.");
+    return;
+  }
+
+  var name = document.getElementById("name").value;
+  var id = document.getElementById("id").value;
+  var email = document.querySelector("#email").value;
+
+  var users = JSON.parse(localStorage.getItem("users"));
+  if (!users) users = [];
+
+  users.forEach((user) => {
+    if (user.isLogin) {
+      user.name = name;
+      user.id = id;
+      user.email = email;
+      user.password = password;
+    }
+  });
+
+  localStorage.setItem("users", JSON.stringify(users));
+  window.location.href = "index.html";
+}
+
+function logout() {
+  users = [];
+  var users = JSON.parse(localStorage.getItem("users"));
+
+  users.forEach((user) => {
+    if (user.isLogin) {
+      user.isLogin = false;
+    }
+  });
+
+  localStorage.setItem("users", JSON.stringify(users));
+  window.location.replace("index.html");
 }
 
 function loginUserBar() {
   var loginNav = document.querySelector("#loginUserCheck");
 
-  var user = JSON.parse(localStorage.getItem("user"));
+  var users = JSON.parse(localStorage.getItem("users"));
 
-  if (user == null) return;
-  if (!user.isLogin) return;
+  if (!users) return;
+  var loginUserExist = false;
+
+  users.forEach((user) => {
+    if (user.isLogin) {
+      loginUserExist = true;
+    }
+  });
+
+  if (!loginUserExist) return;
+
   loginNav.innerHTML = `
     <a href="#" onclick="logout()" class="me-3">로그아웃</a>
     <a href="mypage.html" class="me-3">마이페이지</a>
@@ -205,7 +270,6 @@ function loginUserBar() {
 }
 
 window.onload = function () {
-  UserLoginCheck();
   loginUserBar();
 };
 
