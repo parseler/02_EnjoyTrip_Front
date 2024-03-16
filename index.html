@@ -59,7 +59,7 @@
           <ul>
             <li><a href="index.html">HOME</a></li>
             <li><a href="board.html">공지게시판</a></li>
-            <li><a href="index.html">공유게시판</a></li>
+            <li><a href="favoriteboard.html">공유게시판</a></li>
           </ul>
         </nav>
         <!-- .navbar -->
@@ -127,7 +127,7 @@
             </div>
             <div class="col-md-1">
               <!-- 사이드바 열기 버튼 -->
-              <button onclick="toggleSidebar()">></button>
+              <button onclick="toggleSidebar()" id="sidebar-toggle">></button>
             </div>
             <div class="col-md-3">
               <!-- ======= Sidebar ======= -->
@@ -364,14 +364,14 @@
           // 클릭된 마커가 없고, click 마커가 클릭된 마커가 아니면
           // 마커의 이미지를 클릭 이미지로 변경합니다
           if (!selectedMarker || selectedMarker !== marker) {
-            showInfo(position, marker);
+            showInfo(position, infowindow, marker);
           }
           // 클릭된 마커를 현재 클릭된 마커 객체로 설정합니다
           selectedMarker = marker;
         });
       }
 
-      function showInfo(position, marker) {
+      function showInfo(position, infowindow, marker) {
         console.log(position);
 
         var sidebar = document.getElementById("sidebar"); // 사이드바 요소 가져오기
@@ -399,7 +399,11 @@
                 <span class="author mb-2 d-block">전화번호 ${
                   position.tel
                 }</span>
-                <button onclick="${addhotplace(marker)}">HOT</button>
+                <button onclick="${addhotplace(
+                  position,
+                  marker,
+                  infowindow
+                )}">HOT</button>
               </div>
             </div>
           `;
@@ -407,7 +411,21 @@
         document.getElementById("place-info").innerHTML = positionText;
       }
 
-      function addhotplace(marker) {
+      function addhotplace(position, marker, infowindow) {
+        console.log(marker);
+
+        var favorite = {
+          name: position.title,
+          address: position.addr1,
+        };
+
+        var favorites = JSON.parse(localStorage.getItem("favorites"));
+        if (!favorites) favorites = [];
+
+        favorites.push(favorite);
+
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+
         // 새로운 이미지를 생성합니다
         var newMarkerImage = new kakao.maps.MarkerImage(
           "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
@@ -422,11 +440,9 @@
         });
 
         // 기존의 마커를 제거합니다
+        marker.setMap(null);
         // 기존의 인포윈도우를 제거합니다
         infowindow.close();
-
-        // 기존의 마커를 제거합니다
-        marker.setMap(null);
       }
 
       function displayMarker() {
