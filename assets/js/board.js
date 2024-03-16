@@ -97,46 +97,29 @@ function postBoard() {
   displayBoards();
 }
 
-
 // favorite으로부터 정보 받아와서 공유게시판에 출력
-document.addEventListener('DOMContentLoaded', function () {
-
-  var fvt =[];
-
-  var favorite = {
-    title: "aaa",
-    content: "aaa",
-  };
-  fvt.push(favorite);
-  var favorite = {
-    title: "aaa",
-    content: "aaa",
-  };
-  fvt.push(favorite);
-
-  localStorage.setItem("favorites", JSON.stringify(fvt));
-
+document.addEventListener("DOMContentLoaded", function () {
   // favoriteboardList 요소를 가져옵니다.
-  var favoriteboardList = document.getElementById('favoriteboardList');
+  var favoriteboardList = document.getElementById("favoriteboardList");
 
   // 로컬 스토리지에서 favorite 데이터를 가져옵니다.
-  var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+  var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
   // favorite 데이터를 favoriteboardList에 추가합니다.
   favorites.forEach(function (favorite) {
-      var favoriteItem = document.createElement('div');
-      var btn = document.createElement('button');
-      btn.type = "button";
-      btn.classList.add('btn');
-      btn.classList.add('btn-primary');
-      btn.textContent = "공유하기";
+    var favoriteItem = document.createElement("div");
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.classList.add("btn");
+    btn.classList.add("btn-primary");
+    btn.textContent = "공유하기";
 
-      favoriteItem.classList.add('favorite-item');
-      favoriteItem.innerHTML = '<h2>' + favorite.title + '</h2><p>' + favorite.content + '</p>';
-      // 버튼을 favoriteItem에 추가합니다.
-      favoriteItem.appendChild(btn);
-      favoriteItem.appendChild(document.createElement("hr"));
-      favoriteboardList.appendChild(favoriteItem);
+    favoriteItem.classList.add("favorite-item");
+    favoriteItem.innerHTML =
+      "<h2>" + favorite.title + "</h2><p>" + favorite.content + "</p>";
+    // 버튼을 favoriteItem에 추가합니다.
+    favoriteItem.appendChild(btn);
+    favoriteItem.appendChild(document.createElement("hr"));
+    favoriteboardList.appendChild(favoriteItem);
   });
 });
-
