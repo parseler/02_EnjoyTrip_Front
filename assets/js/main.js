@@ -311,3 +311,4 @@ function btnSearchSidebar() {
   }
   // map.style.width = "100%";
 }
+

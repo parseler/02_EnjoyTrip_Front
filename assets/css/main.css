@@ -1449,3 +1449,26 @@ section {
   /* 기본적으로 메인 영역의 너비를 조절합니다. */
   transition: width 0.3s ease-out; /* 너비 속성에 애니메이션 효과를 부여합니다. */
 }
+
+#sidebar-toggle {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #ffe0c5; /* 버튼 배경색 조절 */
+  border: none;
+  outline: none;
+  cursor: pointer;
+  z-index: 1000; /* 다른 요소 위에 보이도록 z-index 설정 */
+  padding: 20px;
+  border-radius: 50%; /* 버튼을 둥글게 만들기 위해 */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
+  transition: all 0.3s ease; /* 부드러운 애니메이션 효과를 위해 */
+}
+
+#sidebar-toggle:hover {
+  background-color: #9ba9d8; /* 마우스 호버 시 배경색 변경 */
+}
+
+#sidebar-toggle i {
+  color: #000; /* 아이콘 색상 조절 */
+}
