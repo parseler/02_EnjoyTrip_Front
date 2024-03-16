@@ -1438,3 +1438,14 @@ section {
 .footer .credits a {
   color: var(--color-white);
 }
+
+#sidebar {
+  /* 기본적으로 사이드바의 표시 여부를 숨기고, 투명도를 조절하여 애니메이션 효과를 줍니다. */
+  display: none;
+  transition: opacity 0.3s ease-in-out; /* opacity 속성에 애니메이션 효과를 부여합니다. */
+}
+
+#main-map {
+  /* 기본적으로 메인 영역의 너비를 조절합니다. */
+  transition: width 0.3s ease-out; /* 너비 속성에 애니메이션 효과를 부여합니다. */
+}
